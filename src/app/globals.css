@@ -212,29 +212,31 @@ a {
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-md);
 }
 
 .nav-link {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  padding: var(--space-sm) var(--space-md);
-  border-radius: var(--radius-md);
-  font-size: 0.9rem;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  transition: all var(--transition-fast);
+  color: rgba(255, 255, 255, 0.85);
+  transition: all var(--transition-base);
 }
 
 .nav-link:hover {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
 }
 
 .nav-link.active {
-  color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.2) !important;
+  color: var(--color-primary) !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .nav-link-cta {
@@ -311,21 +313,22 @@ a {
 .stats-bar {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: var(--space-md);
-  margin-bottom: var(--space-xl);
+  gap: var(--space-lg);
+  margin-bottom: var(--space-2xl);
 }
 
 .stat-card {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl) var(--space-lg);
   display: flex;
   align-items: center;
   gap: var(--space-md);
   transition: all var(--transition-base);
   animation: fadeInUp 0.5s ease forwards;
   opacity: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 .stat-card:nth-child(1) { animation-delay: 0.05s; }
@@ -337,12 +340,19 @@ a {
 .stat-card:hover {
   background: var(--color-bg-card-hover);
   border-color: var(--color-border-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 
 .stat-icon {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-secondary);
 }
 
 .stat-info {
@@ -352,16 +362,18 @@ a {
 
 .stat-value {
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 800;
   line-height: 1;
+  color: var(--color-text);
+  letter-spacing: -0.5px;
 }
 
 .stat-label {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: var(--color-text-secondary);
-  margin-top: 2px;
-  font-weight: 500;
+  margin-top: 4px;
+  font-weight: 600;
 }
 
 /* ─── Filter Bar ─── */
@@ -499,8 +511,8 @@ a {
 .incident-card {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -510,6 +522,7 @@ a {
   opacity: 0;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .incident-card::before {
@@ -518,8 +531,8 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  height: 4px;
+  background: var(--color-secondary);
   opacity: 0;
   transition: opacity var(--transition-base);
 }
