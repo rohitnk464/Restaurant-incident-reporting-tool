@@ -1,11 +1,16 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import StatsBar from '@/components/StatsBar';
 import FilterBar from '@/components/FilterBar';
 import IncidentCard from '@/components/IncidentCard';
 
 export default function Dashboard() {
+  const { data: session, status: authStatus } = useSession();
+  const router = useRouter();
+  
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -16,8 +21,12 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    fetchIncidents();
-  }, []);
+    if (authStatus === 'unauthenticated') {
+      router.push('/login');
+    } else if (authStatus === 'authenticated') {
+      fetchIncidents();
+    }
+  }, [authStatus, router]);
 
   const fetchIncidents = async () => {
     try {
@@ -48,14 +57,16 @@ export default function Dashboard() {
     return true;
   });
 
-  if (loading) {
+  if (authStatus === 'loading' || loading) {
     return (
       <div className="loading-container">
         <div className="loading-spinner"></div>
-        <p className="loading-text">Loading incidents...</p>
+        <p className="loading-text">Loading dashboard...</p>
       </div>
     );
   }
+
+  if (authStatus === 'unauthenticated') return null;
 
   return (
     <>

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { formatDate, getCategoryIcon, getSeverityColor, getStatusColor } from '@/lib/utils';
 import { STATUSES } from '@/lib/constants';
@@ -9,11 +10,19 @@ import Toast from '@/components/Toast';
 export default function IncidentDetailPage() {
   const { id } = useParams();
   const router = useRouter();
+  const { status: authStatus } = useSession();
+  
   const [incident, setIncident] = useState(null);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState('');
+
+  useEffect(() => {
+    if (authStatus === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [authStatus, router]);
 
   const fetchIncident = useCallback(async () => {
     try {
@@ -90,7 +99,7 @@ export default function IncidentDetailPage() {
     }
   };
 
-  if (loading) {
+  if (loading || authStatus === 'loading') {
     return (
       <div className="loading-container">
         <div className="loading-spinner"></div>
@@ -98,6 +107,8 @@ export default function IncidentDetailPage() {
       </div>
     );
   }
+
+  if (authStatus === 'unauthenticated') return null;
 
   if (!incident) {
     return (
