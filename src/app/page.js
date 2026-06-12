@@ -1,5 +1,5 @@
 'use client';
-import BurritoAnimation from '@/components/BurritoAnimation';
+import LandingPage from '@/components/LandingPage';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -52,7 +52,7 @@ export default function Dashboard() {
 
   // --- STAFF LANDING PAGE (UNAUTHENTICATED) ---
   if (authStatus === 'unauthenticated') {
-    return <BurritoAnimation />;
+    return <LandingPage />;
   }
 
   // --- MANAGER DASHBOARD (AUTHENTICATED) ---
