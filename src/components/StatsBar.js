@@ -1,4 +1,5 @@
 'use client';
+import { FileText, CircleDashed, Clock, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 export default function StatsBar({ incidents }) {
   const total = incidents.length;
@@ -8,11 +9,11 @@ export default function StatsBar({ incidents }) {
   const resolved = incidents.filter(i => i.status === 'Resolved' || i.status === 'Closed').length;
 
   const stats = [
-    { label: 'Total Incidents', value: total, icon: '📋', color: '#a78bfa' },
-    { label: 'Open', value: open, icon: '🔵', color: '#3b82f6' },
-    { label: 'In Progress', value: inProgress, icon: '🟡', color: '#f59e0b' },
-    { label: 'Critical', value: critical, icon: '🔴', color: '#ef4444' },
-    { label: 'Resolved', value: resolved, icon: '✅', color: '#22c55e' },
+    { label: 'Total Incidents', value: total, icon: <FileText size={24} color="#a78bfa" />, color: '#a78bfa' },
+    { label: 'Open', value: open, icon: <CircleDashed size={24} color="#3b82f6" />, color: '#3b82f6' },
+    { label: 'In Progress', value: inProgress, icon: <Clock size={24} color="#f59e0b" />, color: '#f59e0b' },
+    { label: 'Critical', value: critical, icon: <AlertTriangle size={24} color="#ef4444" />, color: '#ef4444' },
+    { label: 'Resolved', value: resolved, icon: <CheckCircle2 size={24} color="#22c55e" />, color: '#22c55e' },
   ];
 
   return (

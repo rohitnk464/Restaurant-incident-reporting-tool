@@ -3,9 +3,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { formatDate, getCategoryIcon, getSeverityColor, getStatusColor } from '@/lib/utils';
+import { formatDate, getSeverityColor, getStatusColor } from '@/lib/utils';
 import { STATUSES } from '@/lib/constants';
 import Toast from '@/components/Toast';
+import CategoryIcon from '@/components/CategoryIcon';
+import { Search, MapPin, FileText, Camera, Bot, Sparkles } from 'lucide-react';
 
 export default function IncidentDetailPage() {
   const { id } = useParams();
@@ -47,14 +49,20 @@ export default function IncidentDetailPage() {
   const handleStatusChange = async (newStatus) => {
     try {
       const res = await fetch(`/api/incidents/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ status: newStatus }),
       });
+
       const data = await res.json();
+
       if (data.success) {
         setIncident(data.data);
-        setToast({ type: 'success', message: `Status updated to "${newStatus}"` });
+        setToast({ type: 'success', message: 'Status updated successfully' });
+      } else {
+        setToast({ type: 'error', message: data.error || 'Failed to update status' });
       }
     } catch (error) {
       setToast({ type: 'error', message: 'Failed to update status' });
@@ -76,24 +84,32 @@ export default function IncidentDetailPage() {
     }
   };
 
-  const handleGenerateAISummary = async () => {
+  const generateSummary = async () => {
     setAiLoading(true);
     setAiError('');
     try {
       const res = await fetch('/api/ai/summarize', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ incidentId: id }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: incident.title,
+          description: incident.description,
+          category: incident.category,
+        }),
       });
+
       const data = await res.json();
+
       if (data.success) {
-        setIncident(prev => ({ ...prev, aiSummary: data.data.summary }));
-        setToast({ type: 'success', message: '✨ AI summary generated!' });
+        setIncident(prev => ({ ...prev, aiSummary: data.summary }));
+        setToast({ type: 'success', message: 'AI Summary generated' });
       } else {
         setAiError(data.error || 'Failed to generate summary');
       }
     } catch (error) {
-      setAiError('Network error. Please try again.');
+      setAiError('Failed to generate summary');
     } finally {
       setAiLoading(false);
     }
@@ -113,7 +129,7 @@ export default function IncidentDetailPage() {
   if (!incident) {
     return (
       <div className="empty-state">
-        <div className="empty-icon">🔍</div>
+        <div className="empty-icon"><Search size={48} color="var(--color-text-muted)" /></div>
         <h2 className="empty-title">Incident Not Found</h2>
         <p className="empty-text">This incident may have been deleted or doesn&apos;t exist.</p>
         <Link href="/" className="submit-btn" style={{ display: 'inline-flex', textDecoration: 'none' }}>
@@ -136,8 +152,11 @@ export default function IncidentDetailPage() {
         <div className="detail-content">
           <div className="detail-header">
             <div className="detail-title-section">
-              <h1 className="detail-title">
-                {getCategoryIcon(incident.category)} {incident.title}
+              <h1 className="detail-title" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span style={{ color: 'var(--color-primary)', display: 'flex' }}>
+                  <CategoryIcon category={incident.category} size={28} />
+                </span>
+                {incident.title}
               </h1>
               <div className="detail-badges">
                 <span
@@ -180,11 +199,15 @@ export default function IncidentDetailPage() {
           <div className="detail-meta">
             <div className="meta-item">
               <span className="meta-label">Category</span>
-              <span className="meta-value">{getCategoryIcon(incident.category)} {incident.category}</span>
+              <span className="meta-value" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <CategoryIcon category={incident.category} size={16} /> {incident.category}
+              </span>
             </div>
             <div className="meta-item">
               <span className="meta-label">Store Location</span>
-              <span className="meta-value">📍 {incident.storeLocation}</span>
+              <span className="meta-value" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <MapPin size={16} /> {incident.storeLocation}
+              </span>
             </div>
             <div className="meta-item">
               <span className="meta-label">Reported At</span>
@@ -197,13 +220,13 @@ export default function IncidentDetailPage() {
           </div>
 
           <div className="detail-description">
-            <h3>📝 Incident Description</h3>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><FileText size={20} /> Incident Description</h3>
             <p>{incident.description}</p>
           </div>
 
           {incident.imageUrl && (
             <div className="detail-image" style={{ marginTop: '2rem' }}>
-              <h3>📸 Attached Photo</h3>
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Camera size={20} /> Attached Photo</h3>
               <img 
                 src={incident.imageUrl} 
                 alt="Incident attachment" 
@@ -214,7 +237,7 @@ export default function IncidentDetailPage() {
 
           {/* AI Summary Section */}
           <div className="ai-section">
-            <h3>🤖 AI-Powered Analysis</h3>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Bot size={20} /> AI-Powered Analysis</h3>
             {incident.aiSummary ? (
               <div className="ai-summary-content">
                 {incident.aiSummary}
@@ -226,13 +249,13 @@ export default function IncidentDetailPage() {
                 </p>
                 <button
                   className="ai-generate-btn"
-                  onClick={handleGenerateAISummary}
+                  onClick={generateSummary}
                   disabled={aiLoading}
                 >
                   {aiLoading ? (
                     <><span className="spinner"></span> Analyzing...</>
                   ) : (
-                    <>✨ Generate AI Summary</>
+                    <><Sparkles size={16} /> Generate AI Summary</>
                   )}
                 </button>
                 {aiError && <p className="ai-error">⚠️ {aiError}</p>}

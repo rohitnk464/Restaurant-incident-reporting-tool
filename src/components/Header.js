@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import ThemeToggle from '@/components/ThemeToggle';
+import { Flame } from 'lucide-react';
 
 export default function Header() {
   const pathname = usePathname();
@@ -14,7 +15,7 @@ export default function Header() {
     <header className="header">
       <div className="header-container">
         <Link href="/" className="logo">
-          <span className="logo-icon">🌯</span>
+          <span className="logo-icon" style={{ display: 'flex', color: 'white' }}><Flame size={32} /></span>
           <div className="logo-text">
             <span className="logo-title">California Burrito</span>
             <span className="logo-subtitle">Incident Reporting</span>
