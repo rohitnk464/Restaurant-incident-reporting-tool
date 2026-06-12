@@ -1400,27 +1400,35 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, rgba(230,28,36,0.1), rgba(230,28,36,0.05));
-  border: 1px solid rgba(230,28,36,0.15);
+  background: rgba(230,28,36,0.06);
+  border: 1px solid rgba(230,28,36,0.1);
   color: var(--color-primary);
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   border-radius: 30px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
   margin-bottom: 2rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(230,28,36,0.05);
+  letter-spacing: 1px;
 }
 
 .corp-title {
   font-family: var(--font-display);
-  font-size: 4rem;
+  font-size: 4.2rem;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.05;
   color: #1a1a1a;
   margin-bottom: 1.5rem;
-  letter-spacing: -1px;
+  letter-spacing: -1.5px;
+}
+
+.ampersand {
+  font-weight: 300;
+  font-style: italic;
+  font-family: var(--font-primary);
+  color: #a0a0a0;
+  font-size: 3.5rem;
+  margin-right: 0.2rem;
 }
 
 .corp-highlight {
@@ -1436,6 +1444,7 @@ a {
   line-height: 1.6;
   margin-bottom: 3rem;
   font-weight: 400;
+  max-width: 550px;
 }
 
 .corp-hero-actions {
@@ -1489,24 +1498,31 @@ a {
 .corp-hero-img {
   width: 100%;
   height: auto;
-  border-radius: 12px;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+  border-radius: 16px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.12);
   display: block;
 }
 
 .corp-system-badge {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background: rgba(15, 15, 26, 0.85);
-  backdrop-filter: blur(10px);
-  padding: 1rem;
-  border-radius: 8px;
+  bottom: 24px;
+  left: -24px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: white;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  color: #1a1a1a;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.corp-hero-image-wrapper:hover .corp-system-badge {
+  transform: translateY(-5px);
 }
 
 .corp-system-icon {

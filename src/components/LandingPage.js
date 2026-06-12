@@ -11,7 +11,7 @@ export default function LandingPage() {
             <ShieldCheck size={16} /> Official Internal Operations Portal
           </div>
           <h1 className="corp-title">
-            Operational Safety <br /> & <span className="corp-highlight">Incident Control</span>
+            Operational Safety <br /> <span className="ampersand">&</span> <span className="corp-highlight">Incident Control</span>
           </h1>
           <p className="corp-subtitle">
             Standardized reporting protocol for all California Burrito regional locations. Ensuring store safety, food compliance, and rapid response through centralized incident management.
@@ -26,7 +26,7 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="corp-hero-image-wrapper">
-          <img src="/hero_bg.png" alt="Manager using tablet" className="corp-hero-img" />
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80" alt="Manager reviewing operations" className="corp-hero-img" crossOrigin="anonymous" />
           <div className="corp-system-badge">
             <div className="corp-system-icon"><ShieldCheck size={20} color="white" /></div>
             <div className="corp-system-text">
