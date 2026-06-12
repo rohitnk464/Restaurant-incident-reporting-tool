@@ -2,6 +2,7 @@ import { Inter, Outfit } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import AuthProvider from '@/components/AuthProvider';
+import ThemeProvider from '@/components/ThemeProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,13 +27,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
+    <html lang="en" className={`${inter.variable} ${outfit.variable}`} suppressHydrationWarning>
       <body>
         <AuthProvider>
-          <Header />
-          <main className="page-container">
-            {children}
-          </main>
+          <ThemeProvider>
+            <Header />
+            <main className="page-container">
+              {children}
+            </main>
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

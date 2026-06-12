@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Header() {
   const pathname = usePathname();
@@ -11,7 +12,7 @@ export default function Header() {
 
   return (
     <header className="header">
-      <div className="header-inner">
+      <div className="header-container">
         <Link href="/" className="logo">
           <span className="logo-icon">🌯</span>
           <div className="logo-text">
@@ -20,50 +21,65 @@ export default function Header() {
           </div>
         </Link>
 
-        <nav className={`nav ${mobileMenuOpen ? 'nav-open' : ''}`}>
-          <Link
-            href="/"
-            className={`nav-link ${pathname === '/' ? 'nav-link-active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <span className="nav-icon">📊</span>
+        {/* Desktop Nav */}
+        <nav className="desktop-nav">
+          <Link href="/" className={`nav-link ${pathname === '/' ? 'active' : ''}`}>
             Dashboard
           </Link>
-          <Link
-            href="/report"
-            className={`nav-link nav-link-cta ${pathname === '/report' ? 'nav-link-active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <span className="nav-icon">➕</span>
+          <Link href="/report" className={`nav-link ${pathname === '/report' ? 'active' : ''}`}>
             Report Incident
           </Link>
           
+          <div style={{ display: 'flex', alignItems: 'center', marginLeft: '1rem', paddingLeft: '1rem', borderLeft: '1px solid var(--color-border)' }}>
+            <ThemeToggle />
+          </div>
+
           {session ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '1rem', paddingLeft: '1rem', borderLeft: '1px solid var(--border)' }}>
-              <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{session.user.email}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '1rem', paddingLeft: '1rem', borderLeft: '1px solid var(--color-border)' }}>
+              <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)' }}>{session.user.email}</span>
               <button onClick={() => signOut()} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem 1rem' }}>
                 Logout
               </button>
             </div>
           ) : (
-            <Link href="/login" className={`nav-link ${pathname === '/login' ? 'nav-link-active' : ''}`} style={{ marginLeft: '1rem' }} onClick={() => setMobileMenuOpen(false)}>
+            <Link href="/login" className={`nav-link ${pathname === '/login' ? 'active' : ''}`} style={{ marginLeft: '1rem' }}>
               Manager Login
             </Link>
           )}
         </nav>
 
-        <button
+        {/* Mobile Menu Button */}
+        <button 
           className="mobile-menu-btn"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
         >
-          <span className={`hamburger ${mobileMenuOpen ? 'hamburger-open' : ''}`}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
+          {mobileMenuOpen ? '✕' : '☰'}
         </button>
       </div>
+
+      {/* Mobile Nav */}
+      {mobileMenuOpen && (
+        <nav className="mobile-nav">
+          <div style={{ padding: '1rem' }}>
+             <ThemeToggle />
+          </div>
+          <Link href="/" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+            Dashboard
+          </Link>
+          <Link href="/report" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+            Report Incident
+          </Link>
+          {session ? (
+            <button onClick={() => { signOut(); setMobileMenuOpen(false); }} className="mobile-nav-link" style={{ textAlign: 'left', background: 'none', border: 'none', width: '100%' }}>
+              Logout ({session.user.email})
+            </button>
+          ) : (
+            <Link href="/login" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
+              Manager Login
+            </Link>
+          )}
+        </nav>
+      )}
     </header>
   );
 }
