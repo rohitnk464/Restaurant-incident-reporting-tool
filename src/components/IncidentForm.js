@@ -15,6 +15,7 @@ export default function IncidentForm() {
     category: '',
     storeLocation: '',
     severity: '',
+    imageUrl: '',
     reportedAt: new Date().toISOString().slice(0, 16),
   });
 
@@ -54,8 +55,13 @@ export default function IncidentForm() {
       const data = await res.json();
 
       if (data.success) {
-        setToast({ type: 'success', message: '🌯 Incident reported successfully!' });
-        setTimeout(() => router.push('/'), 1500);
+        let msg = '🌯 Incident reported successfully!';
+        if (data.emailPreviewUrl) {
+           msg += ' (Email Alert Sent!)';
+           console.log('Manager Email Preview: ', data.emailPreviewUrl);
+        }
+        setToast({ type: 'success', message: msg, link: data.emailPreviewUrl });
+        setTimeout(() => router.push('/'), data.emailPreviewUrl ? 4000 : 1500);
       } else {
         setToast({ type: 'error', message: data.errors?.join(', ') || 'Failed to submit incident' });
       }
@@ -183,6 +189,38 @@ export default function IncidentForm() {
             onChange={(e) => handleChange('reportedAt', e.target.value)}
           />
           {errors.reportedAt && <span className="form-error">{errors.reportedAt}</span>}
+        </div>
+
+        <div className="form-group">
+          <label className="form-label" htmlFor="imageUpload">
+            📸 Attach Photo (Optional)
+          </label>
+          <input
+            id="imageUpload"
+            type="file"
+            accept="image/*"
+            className="form-input"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                  setToast({ type: 'error', message: 'Image must be less than 2MB' });
+                  e.target.value = '';
+                  return;
+                }
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  handleChange('imageUrl', reader.result);
+                };
+                reader.readAsDataURL(file);
+              } else {
+                handleChange('imageUrl', '');
+              }
+            }}
+          />
+          <div className="form-meta">
+            <span className="char-count">Max size: 2MB. Helps context for equipment issues or delivery delays.</span>
+          </div>
         </div>
 
         <button

@@ -201,6 +201,17 @@ export default function IncidentDetailPage() {
             <p>{incident.description}</p>
           </div>
 
+          {incident.imageUrl && (
+            <div className="detail-image" style={{ marginTop: '2rem' }}>
+              <h3>📸 Attached Photo</h3>
+              <img 
+                src={incident.imageUrl} 
+                alt="Incident attachment" 
+                style={{ maxWidth: '100%', maxHeight: '400px', borderRadius: 'var(--radius)', border: '1px solid var(--border)' }} 
+              />
+            </div>
+          )}
+
           {/* AI Summary Section */}
           <div className="ai-section">
             <h3>🤖 AI-Powered Analysis</h3>

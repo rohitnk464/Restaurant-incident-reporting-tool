@@ -47,7 +47,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { title, description, category, storeLocation, severity, reportedAt } = body;
+    const { title, description, category, storeLocation, severity, reportedAt, imageUrl } = body;
 
     // Validation
     const errors = [];
@@ -75,11 +75,51 @@ export async function POST(request) {
         category,
         storeLocation,
         severity,
+        imageUrl: imageUrl || null,
         reportedAt: reportedAt ? new Date(reportedAt) : new Date(),
       },
     });
 
-    return NextResponse.json({ success: true, data: incident }, { status: 201 });
+    let emailPreviewUrl = null;
+
+    // Send email notification for High or Critical incidents
+    if (severity === 'High' || severity === 'Critical') {
+      try {
+        const nodemailer = require('nodemailer');
+        // Generate Ethereal test account
+        const testAccount = await nodemailer.createTestAccount();
+
+        const transporter = nodemailer.createTransport({
+          host: 'smtp.ethereal.email',
+          port: 587,
+          secure: false,
+          auth: {
+            user: testAccount.user,
+            pass: testAccount.pass,
+          },
+        });
+
+        const info = await transporter.sendMail({
+          from: '"Incident System" <noreply@californiaburrito.com>',
+          to: 'manager@californiaburrito.com',
+          subject: `🚨 [${severity}] New Incident: ${title}`,
+          html: `
+            <h2>New ${severity} Incident Reported</h2>
+            <p><strong>Store:</strong> ${storeLocation}</p>
+            <p><strong>Category:</strong> ${category}</p>
+            <p><strong>Description:</strong> ${description}</p>
+            <p><a href="http://localhost:3000/incident/${incident.id}">View Incident Dashboard</a></p>
+          `,
+        });
+
+        emailPreviewUrl = nodemailer.getTestMessageUrl(info);
+        console.log('Preview Email URL: %s', emailPreviewUrl);
+      } catch (err) {
+        console.error('Failed to send email:', err);
+      }
+    }
+
+    return NextResponse.json({ success: true, data: incident, emailPreviewUrl }, { status: 201 });
   } catch (error) {
     console.error('Error creating incident:', error);
     return NextResponse.json(
