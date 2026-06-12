@@ -35,15 +35,33 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="login-container">
+    <div style={{
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('/login_bg.png')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: 'calc(100vh - 80px)', // Adjust for header
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      margin: 'calc(var(--space-lg) * -1) calc(var(--space-lg) * -1) calc(var(--space-3xl) * -1)' // Negate page-container padding
+    }}>
       {toast && <Toast {...toast} onClose={() => setToast(null)} />}
-      <div className="login-card">
-        <div className="login-header">
-          <h2>Manager Login</h2>
-          <p>Sign in to access the incident dashboard</p>
+      <div className="login-card" style={{
+        background: 'var(--color-bg-card)',
+        padding: '3rem',
+        borderRadius: 'var(--radius-xl)',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+        width: '100%',
+        maxWidth: '440px',
+        border: '1px solid var(--color-border)',
+        backdropFilter: 'blur(10px)'
+      }}>
+        <div className="login-header" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-text)', marginBottom: '0.5rem' }}>Manager Login</h2>
+          <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>Sign in to access the incident dashboard</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="incident-form">
+        <form onSubmit={handleSubmit} className="incident-form" style={{ background: 'transparent', padding: 0, border: 'none', boxShadow: 'none' }}>
           <div className="form-group">
             <label className="form-label" htmlFor="email">Email</label>
             <input
@@ -70,14 +88,10 @@ export default function LoginPage() {
             />
           </div>
 
-          <button type="submit" className="submit-btn" disabled={loading} style={{ marginTop: '1rem' }}>
+          <button type="submit" className="submit-btn" disabled={loading} style={{ marginTop: '1.5rem', width: '100%', padding: '12px' }}>
             {loading ? <span className="spinner"></span> : 'Login'}
           </button>
         </form>
-
-        <div className="demo-credentials">
-          <p><strong>Demo Admin:</strong> admin@californiaburrito.com / admin123</p>
-        </div>
       </div>
     </div>
   );
