@@ -1,4 +1,5 @@
 'use client';
+import BurritoAnimation from '@/components/BurritoAnimation';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -51,39 +52,7 @@ export default function Dashboard() {
 
   // --- STAFF LANDING PAGE (UNAUTHENTICATED) ---
   if (authStatus === 'unauthenticated') {
-    return (
-      <div className="landing-wrapper">
-        <div className="floating-element burrito-1">🌯</div>
-        <div className="floating-element burrito-2">🌯</div>
-        <div className="floating-element burrito-3">🔥</div>
-        <div className="floating-element burrito-4">✨</div>
-        
-        <div className="landing-card">
-          <div className="landing-icon-wrapper">
-            <div className="landing-icon-pulse"></div>
-            <FilePlus size={48} className="landing-main-icon" />
-          </div>
-          
-          <h1 className="landing-title">
-            Welcome to <span className="brand-highlight">California Burrito</span>
-          </h1>
-          
-          <p className="landing-subtitle">
-            This is the internal portal for reporting store incidents. If you are a staff member needing to log an issue, please click below to start a new report.
-          </p>
-          
-          <Link href="/report" className="landing-btn">
-            <FilePlus size={22} />
-            <span>Report an Incident</span>
-            <div className="btn-glow"></div>
-          </Link>
-          
-          <div className="landing-footer">
-            <p>Store Managers: Please use the Manager Login at the top right to access the dashboard.</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <BurritoAnimation />;
   }
 
   // --- MANAGER DASHBOARD (AUTHENTICATED) ---
