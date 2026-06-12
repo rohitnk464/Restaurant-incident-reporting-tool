@@ -36,14 +36,17 @@ export default function LoginPage() {
 
   return (
     <div style={{
+      width: '100vw',
+      minHeight: 'calc(100vh - 70px)',
+      marginLeft: 'calc(-50vw + 50%)',
+      marginTop: 'calc(var(--space-lg) * -1)',
+      marginBottom: 'calc(var(--space-3xl) * -1)',
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('/login_bg.png')`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-      minHeight: 'calc(100vh - 80px)', // Adjust for header
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      margin: 'calc(var(--space-lg) * -1) calc(var(--space-lg) * -1) calc(var(--space-3xl) * -1)' // Negate page-container padding
     }}>
       {toast && <Toast {...toast} onClose={() => setToast(null)} />}
       <div className="login-card" style={{
