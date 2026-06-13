@@ -43,7 +43,14 @@ export default function Header() {
               </Link>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '1rem', paddingLeft: '1rem', borderLeft: '1px solid var(--color-border)' }}>
                 <Notifications />
-                <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)' }}>{session.user.email}</span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: '1.2' }}>
+                  <span style={{ fontSize: '0.85rem', color: 'white', fontWeight: '600' }}>
+                    {session.user.role === 'admin' ? 'Global Admin' : 'Store Manager'}
+                  </span>
+                  <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', maxWidth: '150px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {session.user.role === 'admin' ? 'All Locations' : session.user.storeLocation?.replace('California Burrito — ', '') || 'Local Store'}
+                  </span>
+                </div>
                 <button onClick={() => signOut()} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem 1rem' }}>
                   Logout
                 </button>

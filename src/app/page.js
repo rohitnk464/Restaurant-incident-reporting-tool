@@ -85,9 +85,13 @@ export default function Dashboard() {
   return (
     <>
       <div className="page-header">
-        <h1 className="page-title">Incident Dashboard</h1>
+        <h1 className="page-title">
+          Incident Dashboard {session?.user?.role === 'admin' ? '(Global)' : `(${session?.user?.storeLocation?.replace('California Burrito — ', '')})`}
+        </h1>
         <p className="page-subtitle">
-          Monitor and manage operational incidents across all California Burrito locations
+          {session?.user?.role === 'admin' 
+            ? 'Monitor and manage operational incidents across all California Burrito locations'
+            : `Manage operational incidents for your store location`}
         </p>
       </div>
 

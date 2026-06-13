@@ -10,7 +10,7 @@ import {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ff4d54'];
 
 export default function AnalyticsPage() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -106,8 +106,12 @@ export default function AnalyticsPage() {
   return (
     <div className="analytics-container">
       <div className="analytics-header">
-        <h1>Incident Analytics Dashboard</h1>
-        <p>Deep insights into operational performance and incident trends.</p>
+        <h1>Incident Analytics {session?.user?.role === 'admin' ? '(Global)' : `(${session?.user?.storeLocation?.replace('California Burrito — ', '')})`}</h1>
+        <p>
+          {session?.user?.role === 'admin' 
+            ? 'Deep insights into operational performance across all stores.'
+            : 'Deep insights into your store\'s operational performance.'}
+        </p>
       </div>
 
       <div className="analytics-grid">
