@@ -10,6 +10,12 @@ export default function IncidentForm() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
   const [errors, setErrors] = useState({});
+  // Helper to get local date string in YYYY-MM-DDTHH:MM format
+  const getLocalISOString = () => {
+    const tzOffset = (new Date()).getTimezoneOffset() * 60000;
+    return new Date(Date.now() - tzOffset).toISOString().slice(0, 16);
+  };
+
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -17,7 +23,7 @@ export default function IncidentForm() {
     storeLocation: '',
     severity: '',
     imageUrl: '',
-    reportedAt: new Date().toISOString().slice(0, 16),
+    reportedAt: getLocalISOString(),
   });
 
   const handleChange = (field, value) => {
@@ -47,10 +53,15 @@ export default function IncidentForm() {
 
     setLoading(true);
     try {
+      const payload = {
+        ...form,
+        reportedAt: new Date(form.reportedAt).toISOString(),
+      };
+
       const res = await fetch('/api/incidents', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
