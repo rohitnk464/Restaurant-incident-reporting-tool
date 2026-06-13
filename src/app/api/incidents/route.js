@@ -93,39 +93,87 @@ export async function POST(request) {
 
     // Send email notification for High or Critical incidents
     if (severity === 'High' || severity === 'Critical') {
-      try {
-        const nodemailer = require('nodemailer');
-        // Generate Ethereal test account
-        const testAccount = await nodemailer.createTestAccount();
+      // Send email asynchronously in the background so we don't block the API response
+      (async () => {
+        try {
+          const nodemailer = require('nodemailer');
+          let transporter;
 
-        const transporter = nodemailer.createTransport({
-          host: 'smtp.ethereal.email',
-          port: 587,
-          secure: false,
-          auth: {
-            user: testAccount.user,
-            pass: testAccount.pass,
-          },
-        });
+          if (process.env.SMTP_HOST) {
+            // Use production SMTP
+            transporter = nodemailer.createTransport({
+              host: process.env.SMTP_HOST,
+              port: parseInt(process.env.SMTP_PORT || '587'),
+              secure: process.env.SMTP_SECURE === 'true',
+              auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASSWORD,
+              },
+            });
+          } else {
+            // Fallback to Ethereal SMTP for development
+            // Use global caching if available to avoid creating accounts on every request
+            if (!global.etherealAccount) {
+              global.etherealAccount = await nodemailer.createTestAccount();
+            }
+            transporter = nodemailer.createTransport({
+              host: 'smtp.ethereal.email',
+              port: 587,
+              secure: false,
+              auth: {
+                user: global.etherealAccount.user,
+                pass: global.etherealAccount.pass,
+              },
+            });
+          }
 
-        const info = await transporter.sendMail({
-          from: '"Incident System" <noreply@californiaburrito.com>',
-          to: 'manager@californiaburrito.com',
-          subject: `🚨 [${severity}] New Incident: ${title}`,
-          html: `
-            <h2>New ${severity} Incident Reported</h2>
-            <p><strong>Store:</strong> ${storeLocation}</p>
-            <p><strong>Category:</strong> ${category}</p>
-            <p><strong>Description:</strong> ${description}</p>
-            <p><a href="http://localhost:3000/incident/${incident.id}">View Incident Dashboard</a></p>
-          `,
-        });
+          const fromEmail = process.env.SMTP_FROM || '"California Burrito Incident Alerts" <noreply@californiaburrito.com>';
+          const toEmail = process.env.SMTP_TO || 'manager@californiaburrito.com';
 
-        emailPreviewUrl = nodemailer.getTestMessageUrl(info);
-        console.log('Preview Email URL: %s', emailPreviewUrl);
-      } catch (err) {
-        console.error('Failed to send email:', err);
-      }
+          const info = await transporter.sendMail({
+            from: fromEmail,
+            to: toEmail,
+            subject: `🚨 [${severity}] New Incident: ${title}`,
+            html: `
+              <div style="font-family: Arial, sans-serif; padding: 20px; color: #1a1a1a;">
+                <h2 style="color: #e61c24; border-bottom: 2px solid #e61c24; padding-bottom: 10px;">New ${severity} Incident Reported</h2>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold; width: 120px;">Store Location:</td>
+                    <td style="padding: 8px 0;">${storeLocation}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold;">Category:</td>
+                    <td style="padding: 8px 0;">${category}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold;">Severity:</td>
+                    <td style="padding: 8px 0; color: #e61c24; font-weight: bold;">${severity}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 0; font-weight: bold; vertical-align: top;">Description:</td>
+                    <td style="padding: 8px 0; white-space: pre-wrap;">${description}</td>
+                  </tr>
+                </table>
+                <div style="margin-top: 25px;">
+                  <a href="http://localhost:3000/incident/${incident.id}" style="background: #e61c24; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; display: inline-block;">
+                    View Incident Dashboard
+                  </a>
+                </div>
+              </div>
+            `,
+          });
+
+          if (!process.env.SMTP_HOST) {
+            const previewUrl = nodemailer.getTestMessageUrl(info);
+            console.log('\x1b[35m%s\x1b[0m', `✉️  [Email Alert Sent (Dev)] Preview URL: ${previewUrl}`);
+          } else {
+            console.log(`✉️  [Email Alert Sent (Prod)] Message ID: ${info.messageId}`);
+          }
+        } catch (err) {
+          console.error('Failed to send email alert:', err);
+        }
+      })();
     }
 
     return NextResponse.json({ success: true, data: incident, emailPreviewUrl }, { status: 201 });

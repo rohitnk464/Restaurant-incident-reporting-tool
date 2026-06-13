@@ -67,13 +67,8 @@ export default function IncidentForm() {
       const data = await res.json();
 
       if (data.success) {
-        let msg = '🌯 Incident reported successfully!';
-        if (data.emailPreviewUrl) {
-           msg += ' (Email Alert Sent!)';
-           console.log('Manager Email Preview: ', data.emailPreviewUrl);
-        }
-        setToast({ type: 'success', message: msg, link: data.emailPreviewUrl });
-        setTimeout(() => router.push('/'), data.emailPreviewUrl ? 4000 : 1500);
+        setToast({ type: 'success', message: '🌯 Incident reported successfully! The operations team has been notified.' });
+        setTimeout(() => router.push('/'), 2000);
       } else {
         setToast({ type: 'error', message: data.errors?.join(', ') || 'Failed to submit incident' });
       }
