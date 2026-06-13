@@ -64,7 +64,7 @@ export default function Header() {
             </>
           ) : (
             <Link href="/login" className={`nav-link ${pathname === '/login' ? 'active' : ''}`} style={{ marginLeft: '1rem' }}>
-              Manager Login
+              System Login
             </Link>
           )}
         </nav>
@@ -101,7 +101,7 @@ export default function Header() {
               </>
             ) : (
             <Link href="/login" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
-              Manager Login
+              System Login
             </Link>
           )}
         </nav>
