@@ -53,6 +53,48 @@ export const authOptions = {
           };
         }
 
+        // 4. Store Manager - San Diego
+        if (
+          credentials?.email === 'sd@californiaburrito.com' &&
+          credentials?.password === 'manager123'
+        ) {
+          return {
+            id: '4',
+            name: 'Store Manager',
+            email: 'sd@californiaburrito.com',
+            role: 'manager',
+            storeLocation: 'California Burrito — San Diego',
+          };
+        }
+
+        // 5. Store Manager - San Francisco
+        if (
+          credentials?.email === 'sf@californiaburrito.com' &&
+          credentials?.password === 'manager123'
+        ) {
+          return {
+            id: '5',
+            name: 'Store Manager',
+            email: 'sf@californiaburrito.com',
+            role: 'manager',
+            storeLocation: 'California Burrito — San Francisco',
+          };
+        }
+
+        // 6. Store Manager - Oakland
+        if (
+          credentials?.email === 'oakland@californiaburrito.com' &&
+          credentials?.password === 'manager123'
+        ) {
+          return {
+            id: '6',
+            name: 'Store Manager',
+            email: 'oakland@californiaburrito.com',
+            role: 'manager',
+            storeLocation: 'California Burrito — Oakland',
+          };
+        }
+
         return null;
       }
     })
