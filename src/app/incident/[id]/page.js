@@ -94,9 +94,7 @@ export default function IncidentDetailPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: incident.title,
-          description: incident.description,
-          category: incident.category,
+          incidentId: incident.id,
         }),
       });
 
