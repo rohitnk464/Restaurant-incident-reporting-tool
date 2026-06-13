@@ -77,3 +77,8 @@ export async function DELETE(request, { params }) {
     );
   }
 }
+
+// PATCH /api/incidents/[id] - Partial update (e.g., status updates from frontend)
+export async function PATCH(request, { params }) {
+  return PUT(request, { params });
+}
