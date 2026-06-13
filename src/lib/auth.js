@@ -25,7 +25,7 @@ export const authOptions = {
           };
         }
 
-        // 2. Store Manager - Sees only their store
+        // 2. Store Manager - DTLA
         if (
           credentials?.email === 'dtla@californiaburrito.com' &&
           credentials?.password === 'manager123'
@@ -36,6 +36,20 @@ export const authOptions = {
             email: 'dtla@californiaburrito.com',
             role: 'manager',
             storeLocation: 'California Burrito — Downtown LA',
+          };
+        }
+
+        // 3. Store Manager - Santa Monica
+        if (
+          credentials?.email === 'sm@californiaburrito.com' &&
+          credentials?.password === 'manager123'
+        ) {
+          return {
+            id: '3',
+            name: 'Store Manager',
+            email: 'sm@californiaburrito.com',
+            role: 'manager',
+            storeLocation: 'California Burrito — Santa Monica',
           };
         }
 

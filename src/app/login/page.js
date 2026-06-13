@@ -68,9 +68,10 @@ export default function LoginPage() {
           <strong>Demo Accounts:</strong>
           <ul style={{ margin: '0.5rem 0 0 1.2rem', padding: 0 }}>
             <li style={{ marginBottom: '0.25rem' }}>Admin: <code>admin@californiaburrito.com</code> (All Stores)</li>
-            <li>Manager: <code>dtla@californiaburrito.com</code> (DTLA Only)</li>
+            <li style={{ marginBottom: '0.25rem' }}>Manager: <code>dtla@californiaburrito.com</code> (DTLA Only)</li>
+            <li>Manager: <code>sm@californiaburrito.com</code> (Santa Monica Only)</li>
           </ul>
-          <div style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>Password for both: <strong>admin123</strong> and <strong>manager123</strong></div>
+          <div style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>Password for all: <strong>admin123</strong> or <strong>manager123</strong></div>
         </div>
 
         <form onSubmit={handleSubmit} className="incident-form" style={{ background: 'transparent', padding: 0, border: 'none', boxShadow: 'none' }}>
