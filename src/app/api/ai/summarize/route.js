@@ -30,7 +30,7 @@ export async function POST(request) {
 
     const { GoogleGenerativeAI } = await import('@google/generative-ai');
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const prompt = `You are an expert restaurant operations analyst for California Burrito, a QSR chain. Analyze the following incident report and provide a concise, actionable summary.
 
