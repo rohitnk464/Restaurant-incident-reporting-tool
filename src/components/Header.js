@@ -16,7 +16,13 @@ export default function Header() {
     <header className="header">
       <div className="header-container">
         <Link href="/" className="logo">
-          <span className="logo-icon" style={{ display: 'flex', color: 'white' }}><Flame size={32} /></span>
+          <span className="logo-icon" style={{ display: 'flex', background: 'white', padding: '4px', borderRadius: '50%' }}>
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/c/cd/California_Burrito_Logo.png" 
+              alt="California Burrito" 
+              style={{ width: '28px', height: '28px', objectFit: 'contain' }}
+            />
+          </span>
           <div className="logo-text">
             <span className="logo-title">California Burrito</span>
             <span className="logo-subtitle">Incident Reporting</span>
