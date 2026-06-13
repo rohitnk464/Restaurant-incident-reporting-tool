@@ -79,5 +79,5 @@ export const authOptions = {
   pages: {
     signIn: '/login',
   },
-  secret: process.env.NEXTAUTH_SECRET || 'california-burrito-super-secret-key-2026',
+  secret: process.env.NEXTAUTH_SECRET,
 };
