@@ -36,12 +36,17 @@ export default function Header() {
           </div>
 
           {session ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '1rem', paddingLeft: '1rem', borderLeft: '1px solid var(--color-border)' }}>
-              <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)' }}>{session.user.email}</span>
-              <button onClick={() => signOut()} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem 1rem' }}>
-                Logout
-              </button>
-            </div>
+            <>
+              <Link href="/analytics" className={`nav-link ${pathname === '/analytics' ? 'active' : ''}`}>
+                Analytics
+              </Link>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '1rem', paddingLeft: '1rem', borderLeft: '1px solid var(--color-border)' }}>
+                <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)' }}>{session.user.email}</span>
+                <button onClick={() => signOut()} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem 1rem' }}>
+                  Logout
+                </button>
+              </div>
+            </>
           ) : (
             <Link href="/login" className={`nav-link ${pathname === '/login' ? 'active' : ''}`} style={{ marginLeft: '1rem' }}>
               Manager Login
@@ -70,11 +75,16 @@ export default function Header() {
           <Link href="/report" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
             Report Incident
           </Link>
-          {session ? (
-            <button onClick={() => { signOut(); setMobileMenuOpen(false); }} className="mobile-nav-link" style={{ textAlign: 'left', background: 'none', border: 'none', width: '100%' }}>
-              Logout ({session.user.email})
-            </button>
-          ) : (
+            {session ? (
+              <>
+                <Link href="/analytics" className={`nav-link ${pathname === '/analytics' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
+                  Analytics
+                </Link>
+                <button onClick={() => { signOut(); setMobileMenuOpen(false); }} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '1rem' }}>
+                  Logout ({session.user.email})
+                </button>
+              </>
+            ) : (
             <Link href="/login" className="mobile-nav-link" onClick={() => setMobileMenuOpen(false)}>
               Manager Login
             </Link>
