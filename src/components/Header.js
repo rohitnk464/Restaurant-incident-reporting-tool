@@ -92,10 +92,10 @@ export default function Header() {
           </Link>
             {session ? (
               <>
-                <Link href="/analytics" className={`nav-link ${pathname === '/analytics' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
+                <Link href="/analytics" className={`mobile-nav-link ${pathname === '/analytics' ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
                   Analytics
                 </Link>
-                <button onClick={() => { signOut(); setMobileMenuOpen(false); }} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '1rem' }}>
+                <button onClick={() => { signOut(); setMobileMenuOpen(false); }} className="mobile-nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%' }}>
                   Logout ({session.user.email})
                 </button>
               </>

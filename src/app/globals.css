@@ -1601,31 +1601,42 @@ a {
     padding: var(--space-md);
   }
 
+  .desktop-nav {
+    display: none;
+  }
+
   .mobile-menu-btn {
     display: block;
   }
 
-  .nav {
-    display: none;
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    background: rgba(15, 15, 26, 0.95);
-    backdrop-filter: blur(20px);
+    background: var(--color-header-bg);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     padding: var(--space-md);
-    flex-direction: column;
-    border-bottom: 1px solid var(--color-border);
+    z-index: 1000;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
   }
 
-  .nav-open {
+  .mobile-nav-link {
     display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
   }
 
-  .nav-link {
-    width: 100%;
-    justify-content: center;
-    padding: var(--space-md);
+  .mobile-nav-link:hover, .mobile-nav-link.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
   }
 
   .dashboard-header-panel {
