@@ -16,11 +16,11 @@ export default function Header() {
     <header className="header">
       <div className="header-container">
         <Link href="/" className="logo">
-          <span className="logo-icon" style={{ display: 'flex', background: 'white', padding: '4px', borderRadius: '50%' }}>
+          <span className="logo-icon" style={{ display: 'flex' }}>
             <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/c/cd/California_Burrito_Logo.png" 
+              src="https://upload.wikimedia.org/wikipedia/commons/5/5f/California_Burrito_Logo.png" 
               alt="California Burrito" 
-              style={{ width: '28px', height: '28px', objectFit: 'contain' }}
+              style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
             />
           </span>
           <div className="logo-text">
