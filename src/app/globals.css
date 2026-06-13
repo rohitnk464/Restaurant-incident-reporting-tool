@@ -1830,3 +1830,89 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+/* ─── Dark Theme Overrides for Corporate Landing Page ─── */
+[data-theme='dark'] .corp-landing {
+  background: radial-gradient(circle at top right, #111, #1a1a24 40%, #0f0f15 100%);
+  color: var(--color-text);
+}
+
+[data-theme='dark'] .corp-title {
+  color: #fff;
+}
+
+[data-theme='dark'] .corp-subtitle {
+  color: #aaa;
+}
+
+[data-theme='dark'] .corp-feature-card {
+  background: rgba(30, 30, 40, 0.8);
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+[data-theme='dark'] .corp-feature-card:hover {
+  background: rgba(40, 40, 50, 0.9);
+  border-color: rgba(230, 28, 36, 0.3);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+[data-theme='dark'] .corp-feature-card h3 {
+  color: #fff;
+}
+
+[data-theme='dark'] .corp-feature-card p {
+  color: #bbb;
+}
+
+[data-theme='dark'] .corp-feature-list li {
+  color: #ddd;
+}
+
+[data-theme='dark'] .corp-feature-icon {
+  background: linear-gradient(135deg, rgba(230,28,36,0.15), rgba(230,28,36,0.05));
+}
+
+[data-theme='dark'] .corp-stats-section {
+  background: linear-gradient(135deg, #cc161e, #8a0c12);
+}
+
+[data-theme='dark'] .corp-footer {
+  background: #111;
+  border-top-color: #222;
+}
+
+[data-theme='dark'] .corp-footer-left p {
+  color: #888;
+}
+
+[data-theme='dark'] .corp-footer-right a {
+  color: #aaa;
+}
+
+[data-theme='dark'] .corp-badge {
+  background: rgba(230,28,36,0.15);
+  border-color: rgba(230,28,36,0.3);
+}
+
+[data-theme='dark'] .corp-system-badge {
+  background: rgba(10, 10, 15, 0.85);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #eee;
+}
+
+[data-theme='dark'] .corp-section-header h2 {
+  color: #fff;
+}
+
+[data-theme='dark'] .corp-section-header p {
+  color: #aaa;
+}
+
+[data-theme='dark'] .ampersand {
+  color: #555;
+}
+
+[data-theme='dark'] .corp-features-section {
+  background: #0f0f15;
+}
