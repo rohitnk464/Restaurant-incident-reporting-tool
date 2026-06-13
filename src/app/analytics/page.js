@@ -81,18 +81,27 @@ export default function AnalyticsPage() {
     return acc;
   }, []);
 
-  // Trend over time (last 7 days grouped by date string)
+  // Helper to format date in local YYYY-MM-DD format
+  const getLocalDateString = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  // Trend over time (last 7 days grouped by local date string)
   const trendMap = {};
   const today = new Date();
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().split('T')[0];
+    const dateStr = getLocalDateString(d);
     trendMap[dateStr] = 0;
   }
   
   incidents.forEach(inc => {
-    const dateStr = new Date(inc.reportedAt).toISOString().split('T')[0];
+    const dateStr = getLocalDateString(inc.reportedAt);
     if (trendMap[dateStr] !== undefined) {
       trendMap[dateStr] += 1;
     }
