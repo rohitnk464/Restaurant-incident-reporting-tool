@@ -9,6 +9,18 @@ import Toast from '@/components/Toast';
 import CategoryIcon from '@/components/CategoryIcon';
 import { Search, MapPin, FileText, Camera, Bot, Sparkles } from 'lucide-react';
 
+function renderAiSummary(text) {
+  if (!text) return null;
+  return text.split('\n').map((line, idx) => {
+    const parts = line.split('**');
+    return (
+      <p key={idx} style={{ marginBottom: '0.75rem', lineHeight: '1.6', fontSize: '0.95rem', color: 'var(--color-text)' }}>
+        {parts.map((part, i) => i % 2 === 1 ? <strong key={i} style={{ color: 'var(--color-text)', fontWeight: '700' }}>{part}</strong> : part)}
+      </p>
+    );
+  });
+}
+
 export default function IncidentDetailPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -237,8 +249,15 @@ export default function IncidentDetailPage() {
           <div className="ai-section">
             <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Bot size={20} /> AI-Powered Analysis</h3>
             {incident.aiSummary ? (
-              <div className="ai-summary-content">
-                {incident.aiSummary}
+              <div className="ai-summary-content" style={{
+                background: 'var(--color-bg-secondary)',
+                padding: '1.5rem',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--color-border)',
+                marginTop: '1rem',
+                boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)'
+              }}>
+                {renderAiSummary(incident.aiSummary)}
               </div>
             ) : (
               <>
