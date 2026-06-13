@@ -1,0 +1,69 @@
+import CredentialsProvider from 'next-auth/providers/credentials';
+
+export const authOptions = {
+  providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'text', placeholder: 'admin@californiaburrito.com' },
+        password: { label: 'Password', type: 'password' }
+      },
+      async authorize(credentials) {
+        // Hardcoded demo accounts for the assignment
+        
+        // 1. Regional Director (Admin) - Sees all stores
+        if (
+          credentials?.email === 'admin@californiaburrito.com' &&
+          credentials?.password === 'admin123'
+        ) {
+          return {
+            id: '1',
+            name: 'Regional Director',
+            email: 'admin@californiaburrito.com',
+            role: 'admin',
+            storeLocation: 'All',
+          };
+        }
+
+        // 2. Store Manager - Sees only their store
+        if (
+          credentials?.email === 'dtla@californiaburrito.com' &&
+          credentials?.password === 'manager123'
+        ) {
+          return {
+            id: '2',
+            name: 'Store Manager',
+            email: 'dtla@californiaburrito.com',
+            role: 'manager',
+            storeLocation: 'California Burrito — Downtown LA',
+          };
+        }
+
+        return null;
+      }
+    })
+  ],
+  session: {
+    strategy: 'jwt',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+        token.storeLocation = user.storeLocation;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.role = token.role;
+        session.user.storeLocation = token.storeLocation;
+      }
+      return session;
+    }
+  },
+  pages: {
+    signIn: '/login',
+  },
+  secret: process.env.NEXTAUTH_SECRET || 'california-burrito-super-secret-key-2026',
+};

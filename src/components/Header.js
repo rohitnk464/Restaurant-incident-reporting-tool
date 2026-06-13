@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import ThemeToggle from '@/components/ThemeToggle';
+import Notifications from '@/components/Notifications';
 import { Flame } from 'lucide-react';
 
 export default function Header() {
@@ -41,6 +42,7 @@ export default function Header() {
                 Analytics
               </Link>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '1rem', paddingLeft: '1rem', borderLeft: '1px solid var(--color-border)' }}>
+                <Notifications />
                 <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)' }}>{session.user.email}</span>
                 <button onClick={() => signOut()} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.5rem 1rem' }}>
                   Logout

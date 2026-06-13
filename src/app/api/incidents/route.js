@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 // GET /api/incidents - List all incidents with optional filtering
 export async function GET(request) {
   try {
+    const session = await getServerSession(authOptions);
+    
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const severity = searchParams.get('severity');
@@ -11,6 +15,11 @@ export async function GET(request) {
     const search = searchParams.get('search');
 
     const where = {};
+
+    // Role-Based Access Control
+    if (session?.user?.role === 'manager' && session?.user?.storeLocation) {
+      where.storeLocation = session.user.storeLocation;
+    }
 
     if (category) where.category = category;
     if (severity) where.severity = severity;
