@@ -1833,86 +1833,107 @@ a {
 
 /* ─── Dark Theme Overrides for Corporate Landing Page ─── */
 [data-theme='dark'] .corp-landing {
-  background: radial-gradient(circle at top right, #111, #1a1a24 40%, #0f0f15 100%);
+  background: radial-gradient(circle at top right, #1a1a24, #0f0f15 50%, #050508 100%);
   color: var(--color-text);
 }
 
 [data-theme='dark'] .corp-title {
-  color: #fff;
+  color: #ffffff;
+  text-shadow: 0 4px 24px rgba(255, 255, 255, 0.1);
 }
 
 [data-theme='dark'] .corp-subtitle {
-  color: #aaa;
+  color: #a0a0b0;
 }
 
 [data-theme='dark'] .corp-feature-card {
-  background: rgba(30, 30, 40, 0.8);
-  border-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  background: rgba(20, 20, 28, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 8px 24px rgba(0,0,0,0.4);
 }
 
 [data-theme='dark'] .corp-feature-card:hover {
-  background: rgba(40, 40, 50, 0.9);
-  border-color: rgba(230, 28, 36, 0.3);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  background: rgba(30, 30, 42, 0.8);
+  border-color: rgba(230, 28, 36, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(230,28,36,0.15);
 }
 
 [data-theme='dark'] .corp-feature-card h3 {
-  color: #fff;
+  color: #ffffff;
 }
 
 [data-theme='dark'] .corp-feature-card p {
-  color: #bbb;
+  color: #9aa;
 }
 
 [data-theme='dark'] .corp-feature-list li {
-  color: #ddd;
+  color: #ccc;
 }
 
 [data-theme='dark'] .corp-feature-icon {
-  background: linear-gradient(135deg, rgba(230,28,36,0.15), rgba(230,28,36,0.05));
+  background: linear-gradient(135deg, rgba(230,28,36,0.2), rgba(230,28,36,0.05));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
 [data-theme='dark'] .corp-stats-section {
-  background: linear-gradient(135deg, #cc161e, #8a0c12);
+  background: linear-gradient(135deg, #a10c12, #5a0408);
+  box-shadow: inset 0 2px 20px rgba(0,0,0,0.5);
 }
 
 [data-theme='dark'] .corp-footer {
-  background: #111;
-  border-top-color: #222;
+  background: #0a0a0f;
+  border-top-color: rgba(255,255,255,0.05);
 }
 
 [data-theme='dark'] .corp-footer-left p {
-  color: #888;
+  color: #666;
 }
 
 [data-theme='dark'] .corp-footer-right a {
-  color: #aaa;
+  color: #888;
 }
 
-[data-theme='dark'] .corp-badge {
-  background: rgba(230,28,36,0.15);
-  border-color: rgba(230,28,36,0.3);
-}
-
-[data-theme='dark'] .corp-system-badge {
-  background: rgba(10, 10, 15, 0.85);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #eee;
-}
-
-[data-theme='dark'] .corp-section-header h2 {
+[data-theme='dark'] .corp-footer-right a:hover {
   color: #fff;
 }
 
+[data-theme='dark'] .corp-badge {
+  background: rgba(230,28,36,0.1);
+  border: 1px solid rgba(230,28,36,0.3);
+  box-shadow: 0 0 15px rgba(230,28,36,0.15);
+  color: #ff6b70;
+}
+
+[data-theme='dark'] .corp-system-badge {
+  background: rgba(15, 15, 20, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  color: #f0f0f0;
+}
+
+[data-theme='dark'] .corp-section-header h2 {
+  color: #ffffff;
+}
+
 [data-theme='dark'] .corp-section-header p {
-  color: #aaa;
+  color: #9aa;
 }
 
 [data-theme='dark'] .ampersand {
-  color: #555;
+  color: #444;
+  text-shadow: none;
 }
 
 [data-theme='dark'] .corp-features-section {
-  background: #0f0f15;
+  background: #050508;
+  position: relative;
+}
+
+[data-theme='dark'] .corp-features-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
 }
