@@ -1885,7 +1885,7 @@ a {
 
 /* Hero image */
 .corp-hero-image-wrapper { flex: 1; position: relative; max-width: 550px; z-index: 1; }
-.corp-hero-img { width: 100%; height: auto; border-radius: 16px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); display: block; }
+.corp-hero-img { width: 100%; height: auto; border-radius: 16px; box-shadow: 0 30px 60px rgba(0,0,0,0.12); display: block; mix-blend-mode: multiply; }
 
 .corp-system-badge {
   position: absolute; bottom: 24px; left: -24px;
@@ -2188,6 +2188,12 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 16px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
   color: #f0f0f0;
+}
+
+[data-theme='dark'] .corp-hero-img {
+  mix-blend-mode: normal;
+  opacity: 0.85;
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 [data-theme='dark'] .corp-section-header h2 {
