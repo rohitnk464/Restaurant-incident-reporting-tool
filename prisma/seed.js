@@ -36,7 +36,7 @@ const sampleIncidents = [
     storeLocation: 'California Burrito — Downtown LA',
     severity: 'High',
     status: 'In Progress',
-    reportedAt: new Date('2026-06-11T14:20:00'),
+    reportedAt: new Date('2026-06-12T14:20:00'),
   },
   {
     title: 'Customer Found Hair in Burrito',
@@ -45,7 +45,7 @@ const sampleIncidents = [
     storeLocation: 'California Burrito — San Francisco',
     severity: 'High',
     status: 'Resolved',
-    reportedAt: new Date('2026-06-11T19:30:00'),
+    reportedAt: new Date('2026-06-13T19:30:00'),
   },
   {
     title: 'Walk-in Cooler Temperature Rising',
@@ -54,7 +54,7 @@ const sampleIncidents = [
     storeLocation: 'California Burrito — Oakland',
     severity: 'Critical',
     status: 'Open',
-    reportedAt: new Date('2026-06-12T08:00:00'),
+    reportedAt: new Date('2026-06-13T08:00:00'),
   },
   {
     title: 'Salsa Bar Needs Restocking',
@@ -63,7 +63,7 @@ const sampleIncidents = [
     storeLocation: 'California Burrito — Santa Monica',
     severity: 'Low',
     status: 'Resolved',
-    reportedAt: new Date('2026-06-10T18:45:00'),
+    reportedAt: new Date('2026-06-12T18:45:00'),
   },
   {
     title: 'Card Reader Not Accepting Tap Payments',
@@ -72,7 +72,7 @@ const sampleIncidents = [
     storeLocation: 'California Burrito — San Diego',
     severity: 'Medium',
     status: 'Closed',
-    reportedAt: new Date('2026-06-10T14:10:00'),
+    reportedAt: new Date('2026-06-12T14:10:00'),
   },
   {
     title: 'Uber Eats Tablet Offline',
@@ -81,7 +81,7 @@ const sampleIncidents = [
     storeLocation: 'California Burrito — San Francisco',
     severity: 'High',
     status: 'Resolved',
-    reportedAt: new Date('2026-06-11T11:00:00'),
+    reportedAt: new Date('2026-06-13T11:00:00'),
   },
   {
     title: 'Slip and Fall Near Drink Station',
@@ -90,11 +90,14 @@ const sampleIncidents = [
     storeLocation: 'California Burrito — Oakland',
     severity: 'Medium',
     status: 'Closed',
-    reportedAt: new Date('2026-06-09T16:30:00'),
+    reportedAt: new Date('2026-06-12T16:30:00'),
   },
 ];
 
 async function main() {
+  console.log('🗑️ Clearing existing incidents...');
+  await prisma.incident.deleteMany({});
+  
   console.log('🌯 Seeding California Burrito incidents database...');
   
   for (const incident of sampleIncidents) {
