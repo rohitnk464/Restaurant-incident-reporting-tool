@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CATEGORIES, SEVERITY_LEVELS, STORE_LOCATIONS } from '@/lib/constants';
 import Toast from './Toast';
+import { FileText, Tag, MapPin, Calendar, Image, Send, AlertTriangle } from 'lucide-react';
 
 export default function IncidentForm() {
   const router = useRouter();
@@ -75,166 +76,207 @@ export default function IncidentForm() {
   return (
     <>
       {toast && <Toast {...toast} onClose={() => setToast(null)} />}
-      <form className="incident-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label className="form-label" htmlFor="title">
-            📝 Incident Title <span className="required">*</span>
+      <form className="premium-incident-form" onSubmit={handleSubmit}>
+        <div className="form-group-panel">
+          <label className="premium-form-label" htmlFor="title">
+            <FileText size={16} />
+            <span>Incident Title <span className="required-star">*</span></span>
           </label>
           <input
             id="title"
             type="text"
-            className={`form-input ${errors.title ? 'form-input-error' : ''}`}
-            placeholder="e.g., POS Terminal #3 Unresponsive"
+            className={`premium-form-input ${errors.title ? 'premium-input-error' : ''}`}
+            placeholder="e.g., Main POS Screen Unresponsive"
             value={form.title}
             onChange={(e) => handleChange('title', e.target.value)}
             maxLength={100}
           />
-          <div className="form-meta">
-            {errors.title && <span className="form-error">{errors.title}</span>}
-            <span className="char-count">{form.title.length}/100</span>
+          <div className="premium-form-meta">
+            {errors.title && <span className="premium-validation-error">{errors.title}</span>}
+            <span className="premium-char-counter">{form.title.length}/100</span>
           </div>
         </div>
 
-        <div className="form-group">
-          <label className="form-label" htmlFor="description">
-            📄 Description <span className="required">*</span>
+        <div className="form-group-panel">
+          <label className="premium-form-label" htmlFor="description">
+            <FileText size={16} />
+            <span>Incident Description <span className="required-star">*</span></span>
           </label>
           <textarea
             id="description"
-            className={`form-textarea ${errors.description ? 'form-input-error' : ''}`}
-            placeholder="Describe the incident in detail... What happened? When? What's the impact?"
+            className={`premium-form-textarea ${errors.description ? 'premium-input-error' : ''}`}
+            placeholder="Provide a detailed description of the incident... What happened? How does it impact restaurant operations?"
             value={form.description}
             onChange={(e) => handleChange('description', e.target.value)}
             rows={5}
             maxLength={2000}
           />
-          <div className="form-meta">
-            {errors.description && <span className="form-error">{errors.description}</span>}
-            <span className="char-count">{form.description.length}/2000</span>
+          <div className="premium-form-meta">
+            {errors.description && <span className="premium-validation-error">{errors.description}</span>}
+            <span className="premium-char-counter">{form.description.length}/2000</span>
           </div>
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label className="form-label" htmlFor="category">
-              🏷️ Category <span className="required">*</span>
+        <div className="form-grid-row">
+          <div className="form-group-panel">
+            <label className="premium-form-label" htmlFor="category">
+              <Tag size={16} />
+              <span>Category <span className="required-star">*</span></span>
             </label>
-            <select
-              id="category"
-              className={`form-select ${errors.category ? 'form-input-error' : ''}`}
-              value={form.category}
-              onChange={(e) => handleChange('category', e.target.value)}
-            >
-              <option value="">Select category...</option>
-              {CATEGORIES.map(cat => (
-                <option key={cat.value} value={cat.value}>
-                  {cat.icon} {cat.label}
-                </option>
-              ))}
-            </select>
-            {errors.category && <span className="form-error">{errors.category}</span>}
+            <div className="form-select-wrapper">
+              <select
+                id="category"
+                className={`premium-form-select ${errors.category ? 'premium-input-error' : ''}`}
+                value={form.category}
+                onChange={(e) => handleChange('category', e.target.value)}
+              >
+                <option value="">Select category...</option>
+                {CATEGORIES.map(cat => (
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {errors.category && <span className="premium-validation-error">{errors.category}</span>}
           </div>
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="storeLocation">
-              📍 Store Location <span className="required">*</span>
+          <div className="form-group-panel">
+            <label className="premium-form-label" htmlFor="storeLocation">
+              <MapPin size={16} />
+              <span>Store Location <span className="required-star">*</span></span>
             </label>
-            <select
-              id="storeLocation"
-              className={`form-select ${errors.storeLocation ? 'form-input-error' : ''}`}
-              value={form.storeLocation}
-              onChange={(e) => handleChange('storeLocation', e.target.value)}
-            >
-              <option value="">Select store...</option>
-              {STORE_LOCATIONS.map(loc => (
-                <option key={loc} value={loc}>{loc}</option>
-              ))}
-            </select>
-            {errors.storeLocation && <span className="form-error">{errors.storeLocation}</span>}
+            <div className="form-select-wrapper">
+              <select
+                id="storeLocation"
+                className={`premium-form-select ${errors.storeLocation ? 'premium-input-error' : ''}`}
+                value={form.storeLocation}
+                onChange={(e) => handleChange('storeLocation', e.target.value)}
+              >
+                <option value="">Select store location...</option>
+                {STORE_LOCATIONS.map(loc => (
+                  <option key={loc} value={loc}>{loc}</option>
+                ))}
+              </select>
+            </div>
+            {errors.storeLocation && <span className="premium-validation-error">{errors.storeLocation}</span>}
           </div>
         </div>
 
-        <div className="form-group">
-          <label className="form-label">
-            ⚠️ Severity Level <span className="required">*</span>
+        <div className="form-group-panel">
+          <label className="premium-form-label">
+            <AlertTriangle size={16} />
+            <span>Severity Level <span className="required-star">*</span></span>
           </label>
-          <div className="severity-chips">
+          <div className="premium-severity-selector">
             {SEVERITY_LEVELS.map(sev => (
               <button
                 key={sev.value}
                 type="button"
-                className={`severity-chip ${form.severity === sev.value ? 'severity-chip-active' : ''}`}
+                className={`premium-severity-chip-btn ${form.severity === sev.value ? 'chip-active' : ''}`}
                 style={{
                   '--chip-color': sev.color,
                   '--chip-bg': sev.bg,
                 }}
                 onClick={() => handleChange('severity', sev.value)}
               >
-                {sev.label}
+                <span className="severity-chip-dot"></span>
+                <span>{sev.label}</span>
               </button>
             ))}
           </div>
-          {errors.severity && <span className="form-error">{errors.severity}</span>}
+          {errors.severity && <span className="premium-validation-error">{errors.severity}</span>}
         </div>
 
-        <div className="form-group">
-          <label className="form-label" htmlFor="reportedAt">
-            📅 Date & Time <span className="required">*</span>
+        <div className="form-group-panel">
+          <label className="premium-form-label" htmlFor="reportedAt">
+            <Calendar size={16} />
+            <span>Date & Time of Occurrence <span className="required-star">*</span></span>
           </label>
           <input
             id="reportedAt"
             type="datetime-local"
-            className={`form-input ${errors.reportedAt ? 'form-input-error' : ''}`}
+            className={`premium-form-input ${errors.reportedAt ? 'premium-input-error' : ''}`}
             value={form.reportedAt}
             onChange={(e) => handleChange('reportedAt', e.target.value)}
           />
-          {errors.reportedAt && <span className="form-error">{errors.reportedAt}</span>}
+          {errors.reportedAt && <span className="premium-validation-error">{errors.reportedAt}</span>}
         </div>
 
-        <div className="form-group">
-          <label className="form-label" htmlFor="imageUpload">
-            📸 Attach Photo (Optional)
+        <div className="form-group-panel">
+          <label className="premium-form-label">
+            <Image size={16} />
+            <span>Attach Photo (Optional)</span>
           </label>
-          <input
-            id="imageUpload"
-            type="file"
-            accept="image/*"
-            className="form-input"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                if (file.size > 2 * 1024 * 1024) {
-                  setToast({ type: 'error', message: 'Image must be less than 2MB' });
-                  e.target.value = '';
-                  return;
+          <div className="premium-file-drag-area">
+            <input
+              id="imageUpload"
+              type="file"
+              accept="image/*"
+              className="premium-hidden-file-input"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  if (file.size > 2 * 1024 * 1024) {
+                    setToast({ type: 'error', message: 'Image must be less than 2MB' });
+                    e.target.value = '';
+                    return;
+                  }
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    handleChange('imageUrl', reader.result);
+                  };
+                  reader.readAsDataURL(file);
+                } else {
+                  handleChange('imageUrl', '');
                 }
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  handleChange('imageUrl', reader.result);
-                };
-                reader.readAsDataURL(file);
-              } else {
-                handleChange('imageUrl', '');
-              }
-            }}
-          />
-          <div className="form-meta">
-            <span className="char-count">Max size: 2MB. Helps context for equipment issues or delivery delays.</span>
+              }}
+            />
+            <label htmlFor="imageUpload" className="premium-file-upload-trigger">
+              <div className="trigger-icon-bg">
+                <Image size={24} />
+              </div>
+              <div className="trigger-main-text">
+                {form.imageUrl ? '✓ Photo Attached Successfully' : 'Select a photo to attach'}
+              </div>
+              <div className="trigger-sub-text">
+                Supports JPG, PNG up to 2MB size
+              </div>
+            </label>
           </div>
+          {form.imageUrl && (
+            <div className="premium-file-preview-card">
+              <img src={form.imageUrl} alt="Uploaded attachment preview" />
+              <button 
+                type="button" 
+                className="remove-preview-btn"
+                onClick={() => handleChange('imageUrl', '')}
+              >
+                Remove Photo
+              </button>
+            </div>
+          )}
         </div>
 
         <button
           type="submit"
-          className="submit-btn"
+          className="premium-submit-action-btn"
           disabled={loading}
         >
           {loading ? (
-            <><span className="spinner"></span> Submitting...</>
+            <>
+              <span className="premium-loading-spinner-circle"></span>
+              <span>Submitting Report...</span>
+            </>
           ) : (
-            <>🌯 Submit Incident Report</>
+            <>
+              <Send size={18} />
+              <span>Submit Incident Report</span>
+            </>
           )}
         </button>
       </form>
     </>
   );
 }
+
