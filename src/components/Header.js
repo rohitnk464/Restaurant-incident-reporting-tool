@@ -18,7 +18,7 @@ export default function Header() {
         <Link href="/" className="logo">
           <span className="logo-icon" style={{ display: 'flex' }}>
             <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/5/5f/California_Burrito_Logo.png" 
+              src="/logo.png" 
               alt="California Burrito" 
               style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
             />
