@@ -7,6 +7,12 @@ import { authOptions } from '@/lib/auth';
 export async function GET(request) {
   try {
     const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized: Access is restricted to authenticated users.' },
+        { status: 401 }
+      );
+    }
     
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
@@ -17,7 +23,7 @@ export async function GET(request) {
     const where = {};
 
     // Role-Based Access Control
-    if (session?.user?.role === 'manager' && session?.user?.storeLocation) {
+    if (session.user.role === 'manager' && session.user.storeLocation) {
       where.storeLocation = session.user.storeLocation;
     }
 

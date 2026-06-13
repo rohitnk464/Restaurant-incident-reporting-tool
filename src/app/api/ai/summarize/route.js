@@ -1,8 +1,18 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 export async function POST(request) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized: Access is restricted.' },
+        { status: 401 }
+      );
+    }
+
     const { incidentId } = await request.json();
 
     if (!incidentId) {
@@ -18,6 +28,16 @@ export async function POST(request) {
         { success: false, error: 'Incident not found' },
         { status: 404 }
       );
+    }
+
+    // Role-Based Access Control: Manager can only summarize incidents from their own store location
+    if (session.user.role === 'manager' && session.user.storeLocation) {
+      if (incident.storeLocation !== session.user.storeLocation) {
+        return NextResponse.json(
+          { success: false, error: 'Access denied: Incident belongs to another store location' },
+          { status: 403 }
+        );
+      }
     }
 
     const apiKey = process.env.GEMINI_API_KEY;

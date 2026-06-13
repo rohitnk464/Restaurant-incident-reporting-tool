@@ -113,7 +113,7 @@ export default function IncidentDetailPage() {
       const data = await res.json();
 
       if (data.success) {
-        setIncident(prev => ({ ...prev, aiSummary: data.summary }));
+        setIncident(prev => ({ ...prev, aiSummary: data.data.summary }));
         setToast({ type: 'success', message: 'AI Summary generated' });
       } else {
         setAiError(data.error || 'Failed to generate summary');

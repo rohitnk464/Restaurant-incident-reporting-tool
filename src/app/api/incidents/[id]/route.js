@@ -1,9 +1,19 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 // GET /api/incidents/[id] - Get single incident
 export async function GET(request, { params }) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized: Access is restricted.' },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
     const incident = await prisma.incident.findUnique({ where: { id } });
 
@@ -12,6 +22,16 @@ export async function GET(request, { params }) {
         { success: false, error: 'Incident not found' },
         { status: 404 }
       );
+    }
+
+    // Role-Based Access Control: Manager can only access incidents from their own store location
+    if (session.user.role === 'manager' && session.user.storeLocation) {
+      if (incident.storeLocation !== session.user.storeLocation) {
+        return NextResponse.json(
+          { success: false, error: 'Access denied: Incident belongs to another store location' },
+          { status: 403 }
+        );
+      }
     }
 
     return NextResponse.json({ success: true, data: incident });
@@ -27,6 +47,14 @@ export async function GET(request, { params }) {
 // PUT /api/incidents/[id] - Update incident
 export async function PUT(request, { params }) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized: Access is restricted.' },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
     const body = await request.json();
 
@@ -36,6 +64,16 @@ export async function PUT(request, { params }) {
         { success: false, error: 'Incident not found' },
         { status: 404 }
       );
+    }
+
+    // Role-Based Access Control: Manager can only update incidents from their own store location
+    if (session.user.role === 'manager' && session.user.storeLocation) {
+      if (existing.storeLocation !== session.user.storeLocation) {
+        return NextResponse.json(
+          { success: false, error: 'Access denied: Incident belongs to another store location' },
+          { status: 403 }
+        );
+      }
     }
 
     const incident = await prisma.incident.update({
@@ -56,6 +94,14 @@ export async function PUT(request, { params }) {
 // DELETE /api/incidents/[id] - Delete incident
 export async function DELETE(request, { params }) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized: Access is restricted.' },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
 
     const existing = await prisma.incident.findUnique({ where: { id } });
@@ -64,6 +110,16 @@ export async function DELETE(request, { params }) {
         { success: false, error: 'Incident not found' },
         { status: 404 }
       );
+    }
+
+    // Role-Based Access Control: Manager can only delete incidents from their own store location
+    if (session.user.role === 'manager' && session.user.storeLocation) {
+      if (existing.storeLocation !== session.user.storeLocation) {
+        return NextResponse.json(
+          { success: false, error: 'Access denied: Incident belongs to another store location' },
+          { status: 403 }
+        );
+      }
     }
 
     await prisma.incident.delete({ where: { id } });
