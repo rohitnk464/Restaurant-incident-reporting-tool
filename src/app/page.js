@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { FilePlus } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import StatsBar from '@/components/StatsBar';
 import FilterBar from '@/components/FilterBar';
 import IncidentCard from '@/components/IncidentCard';
@@ -82,17 +82,37 @@ export default function Dashboard() {
 
   if (authStatus === 'unauthenticated') return null;
 
+  const criticalCount = incidents.filter(i => i.severity === 'Critical' && i.status !== 'Resolved' && i.status !== 'Closed').length;
+  const highCount = incidents.filter(i => i.severity === 'High' && i.status !== 'Resolved' && i.status !== 'Closed').length;
+  const statusColor = criticalCount > 0 ? '#ef4444' : highCount > 0 ? '#f59e0b' : '#22c55e';
+  const statusText = criticalCount > 0 ? 'CRITICAL INCIDENTS' : highCount > 0 ? 'WARNING ALERTS' : 'ALL SYSTEMS OPERATIONAL';
+
   return (
-    <>
-      <div className="page-header">
-        <h1 className="page-title">
-          Incident Dashboard {session?.user?.role === 'admin' ? '(Global)' : `(${session?.user?.storeLocation?.replace('California Burrito — ', '')})`}
-        </h1>
-        <p className="page-subtitle">
-          {session?.user?.role === 'admin' 
-            ? 'Monitor and manage operational incidents across all California Burrito locations'
-            : `Manage operational incidents for your store location`}
-        </p>
+    <div className="dashboard-wrapper">
+      <div className="dashboard-header-panel">
+        <div className="dashboard-header-left">
+          <div className="system-status-badge">
+            <span className="pulse-dot" style={{ backgroundColor: statusColor, boxShadow: `0 0 8px ${statusColor}` }}></span>
+            <span className="status-label-text" style={{ color: statusColor }}>{statusText}</span>
+          </div>
+          <h1 className="page-title">
+            Incident Command Center
+            <span className="store-tag">
+              {session?.user?.role === 'admin' ? 'Global Admin' : session?.user?.storeLocation?.replace('California Burrito — ', '')}
+            </span>
+          </h1>
+          <p className="page-subtitle">
+            {session?.user?.role === 'admin' 
+              ? 'Real-time operational overview, incident response, and performance analytics across all outlets.'
+              : `Operational incident log and resolution console for your store location.`}
+          </p>
+        </div>
+        <div className="dashboard-header-actions">
+          <Link href="/report" className="premium-btn primary-btn">
+            <PlusCircle size={18} />
+            <span>Report Incident</span>
+          </Link>
+        </div>
       </div>
 
       <StatsBar incidents={incidents} />
@@ -105,23 +125,32 @@ export default function Dashboard() {
           ))}
         </div>
       ) : (
-        <div className="empty-state">
-          <div className="empty-icon">🌯</div>
+        <div className="empty-state-card">
+          <div className="empty-illustration">
+            <div className="empty-orb"></div>
+            <span className="empty-emoji">🌯</span>
+          </div>
           <h2 className="empty-title">
-            {incidents.length === 0 ? 'No incidents yet' : 'No matching incidents'}
+            {incidents.length === 0 ? 'Clean Slate' : 'No matches found'}
           </h2>
           <p className="empty-text">
             {incidents.length === 0
-              ? 'Everything is running smoothly! Report an incident when something comes up.'
-              : 'Try adjusting your filters or search query.'}
+              ? 'Excellent! No operational incidents recorded. Everything is running smoothly.'
+              : 'No incidents match your current search queries or filter selections.'}
           </p>
-          {incidents.length === 0 && (
-            <Link href="/report" className="submit-btn" style={{ display: 'inline-flex', textDecoration: 'none' }}>
-              🌯 Report First Incident
+          {incidents.length === 0 ? (
+            <Link href="/report" className="premium-btn primary-btn" style={{ display: 'inline-flex', margin: '0 auto' }}>
+              <PlusCircle size={18} />
+              <span>Report First Incident</span>
             </Link>
+          ) : (
+            <button className="premium-btn secondary-btn" onClick={() => setFilters({ category: '', severity: '', status: '', search: '' })} style={{ display: 'inline-flex', margin: '0 auto' }}>
+              Reset Filters
+            </button>
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }
+

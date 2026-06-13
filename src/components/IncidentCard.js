@@ -2,61 +2,60 @@
 import Link from 'next/link';
 import { timeAgo, truncate, getSeverityColor, getStatusColor } from '@/lib/utils';
 import CategoryIcon from '@/components/CategoryIcon';
-import { MapPin } from 'lucide-react';
+import { MapPin, Clock, ArrowRight } from 'lucide-react';
 
 export default function IncidentCard({ incident, index }) {
+  const sevColor = getSeverityColor(incident.severity);
+  const statColor = getStatusColor(incident.status);
+
   return (
     <Link
       href={`/incident/${incident.id}`}
-      className="incident-card"
-      style={{ animationDelay: `${index * 0.05}s` }}
+      className="premium-incident-card"
+      style={{ 
+        animationDelay: `${index * 0.05}s`,
+        '--severity-color': sevColor,
+        '--status-color': statColor
+      }}
     >
-      <div className="card-header">
-        <div className="card-badges">
-          <span
-            className="badge severity-badge"
-            style={{
-              color: getSeverityColor(incident.severity),
-              backgroundColor: getSeverityColor(incident.severity) + '20',
-              borderColor: getSeverityColor(incident.severity) + '40',
-            }}
-          >
+      <div className="card-top-row">
+        <div className="badge-group">
+          <span className="premium-badge severity-badge">
             {incident.severity}
           </span>
-          <span
-            className="badge status-badge"
-            style={{
-              color: getStatusColor(incident.status),
-              backgroundColor: getStatusColor(incident.status) + '20',
-              borderColor: getStatusColor(incident.status) + '40',
-            }}
-          >
+          <span className="premium-badge status-badge">
             {incident.status}
           </span>
         </div>
-        <span className="card-time" title={new Date(incident.reportedAt).toLocaleString()}>
-          {timeAgo(incident.reportedAt)}
-        </span>
+        <div className="time-ago-badge" title={new Date(incident.reportedAt).toLocaleString()}>
+          <Clock size={12} />
+          <span>{timeAgo(incident.reportedAt)}</span>
+        </div>
       </div>
 
-      <div className="card-body">
-        <h3 className="card-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span className="card-category-icon" style={{ display: 'flex', color: 'var(--color-primary)' }}>
-            <CategoryIcon category={incident.category} size={20} />
+      <div className="card-content-area">
+        <h3 className="incident-title">
+          <span className="category-icon-bg">
+            <CategoryIcon category={incident.category} size={16} />
           </span>
-          {incident.title}
+          <span className="title-text">{incident.title}</span>
         </h3>
-        <p className="card-description">{truncate(incident.description)}</p>
+        <p className="incident-desc">{truncate(incident.description, 120)}</p>
       </div>
 
-      <div className="card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span className="card-category">{incident.category}</span>
-        <span className="card-store" style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-text-secondary)', fontSize: '0.85rem' }}>
-          <MapPin size={14} color="var(--color-primary)" />
-          {incident.storeLocation.replace('California Burrito — ', '')}
-        </span>
+      <div className="card-bottom-row">
+        <span className="category-text-label">{incident.category}</span>
+        <div className="store-location-info">
+          <MapPin size={13} />
+          <span>{incident.storeLocation.replace('California Burrito — ', '')}</span>
+        </div>
+      </div>
+      
+      <div className="card-hover-arrow">
+        <span>View Details</span>
+        <ArrowRight size={14} />
       </div>
     </Link>
-
   );
 }
+
