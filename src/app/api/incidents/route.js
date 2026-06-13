@@ -127,12 +127,27 @@ export async function POST(request) {
             });
           }
 
+          // Dynamic routing of email alert based on store location
+          const getStoreManagerEmail = (location) => {
+            if (!location) return 'manager@californiaburrito.com';
+            if (location.includes('Downtown LA')) return 'dtla@californiaburrito.com';
+            if (location.includes('Santa Monica')) return 'sm@californiaburrito.com';
+            if (location.includes('San Diego')) return 'sd@californiaburrito.com';
+            if (location.includes('San Francisco')) return 'sf@californiaburrito.com';
+            if (location.includes('Oakland')) return 'oakland@californiaburrito.com';
+            return 'manager@californiaburrito.com';
+          };
+
           const fromEmail = process.env.SMTP_FROM || '"California Burrito Incident Alerts" <noreply@californiaburrito.com>';
-          const toEmail = process.env.SMTP_TO || 'manager@californiaburrito.com';
+          const managerEmail = getStoreManagerEmail(storeLocation);
+          
+          // CC the global admin and optionally the corporate alert distribution list if configured
+          const ccList = ['admin@californiaburrito.com', process.env.SMTP_TO].filter(Boolean);
 
           const info = await transporter.sendMail({
             from: fromEmail,
-            to: toEmail,
+            to: managerEmail,
+            cc: ccList,
             subject: `🚨 [${severity}] New Incident: ${title}`,
             html: `
               <div style="font-family: Arial, sans-serif; padding: 20px; color: #1a1a1a;">
