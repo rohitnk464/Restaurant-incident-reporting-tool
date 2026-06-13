@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Toast from '@/components/Toast';
@@ -8,10 +8,19 @@ export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
+  const [activeRole, setActiveRole] = useState('admin');
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    email: 'admin@californiaburrito.com',
+    password: 'admin123',
   });
+
+  useEffect(() => {
+    if (activeRole === 'admin') {
+      setForm({ email: 'admin@californiaburrito.com', password: 'admin123' });
+    } else {
+      setForm({ email: 'dtla@californiaburrito.com', password: 'manager123' });
+    }
+  }, [activeRole]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,20 +68,45 @@ export default function LoginPage() {
         border: '1px solid var(--color-border)',
         backdropFilter: 'blur(10px)'
       }}>
-        <div className="login-header" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-text)', marginBottom: '0.5rem' }}>Manager Login</h2>
-          <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>Sign in to access the incident dashboard</p>
+        <div className="login-header" style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', color: 'var(--color-text)', marginBottom: '0.5rem' }}>
+            System Login
+          </h2>
+          <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.95rem' }}>Select your role to access the portal</p>
         </div>
 
-        <div style={{ background: 'var(--color-bg)', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', fontSize: '0.8rem', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }}>
-          <strong>Demo Accounts:</strong>
-          <ul style={{ margin: '0.5rem 0 0 1.2rem', padding: 0 }}>
-            <li style={{ marginBottom: '0.25rem' }}>Admin: <code>admin@californiaburrito.com</code> (All Stores)</li>
-            <li style={{ marginBottom: '0.25rem' }}>Manager: <code>dtla@californiaburrito.com</code> (DTLA Only)</li>
-            <li>Manager: <code>sm@californiaburrito.com</code> (Santa Monica Only)</li>
-          </ul>
-          <div style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>Password for all: <strong>admin123</strong> or <strong>manager123</strong></div>
+        <div style={{ display: 'flex', background: 'var(--color-bg-secondary)', borderRadius: '8px', padding: '4px', marginBottom: '2rem' }}>
+          <button
+            type="button"
+            onClick={() => setActiveRole('admin')}
+            style={{
+              flex: 1, padding: '0.75rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: '600', transition: 'all 0.2s',
+              background: activeRole === 'admin' ? 'var(--color-primary)' : 'transparent',
+              color: activeRole === 'admin' ? 'white' : 'var(--color-text-muted)',
+              boxShadow: activeRole === 'admin' ? '0 4px 12px rgba(230,28,36,0.3)' : 'none'
+            }}
+          >
+            Global Admin
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveRole('manager')}
+            style={{
+              flex: 1, padding: '0.75rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontWeight: '600', transition: 'all 0.2s',
+              background: activeRole === 'manager' ? 'var(--color-primary)' : 'transparent',
+              color: activeRole === 'manager' ? 'white' : 'var(--color-text-muted)',
+              boxShadow: activeRole === 'manager' ? '0 4px 12px rgba(230,28,36,0.3)' : 'none'
+            }}
+          >
+            Store Manager
+          </button>
         </div>
+
+        {activeRole === 'manager' && (
+          <div style={{ textAlign: 'center', marginBottom: '1rem', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
+            <em>Auto-filled with Downtown LA manager credentials.<br/>Also available: sm@californiaburrito.com</em>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="incident-form" style={{ background: 'transparent', padding: 0, border: 'none', boxShadow: 'none' }}>
           <div className="form-group">
@@ -83,7 +117,6 @@ export default function LoginPage() {
               className="form-input"
               value={form.email}
               onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
-              placeholder="admin@californiaburrito.com"
               required
             />
           </div>
