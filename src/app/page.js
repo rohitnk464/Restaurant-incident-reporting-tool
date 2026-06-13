@@ -22,12 +22,6 @@ export default function Dashboard() {
     search: '',
   });
 
-  useEffect(() => {
-    if (authStatus === 'authenticated') {
-      fetchIncidents();
-    }
-  }, [authStatus]);
-
   const fetchIncidents = async () => {
     try {
       const res = await fetch('/api/incidents');
@@ -41,6 +35,12 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (authStatus === 'authenticated') {
+      fetchIncidents();
+    }
+  }, [authStatus]);
 
   if (authStatus === 'loading') {
     return (

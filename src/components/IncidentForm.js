@@ -16,7 +16,7 @@ export default function IncidentForm() {
     return new Date(Date.now() - tzOffset).toISOString().slice(0, 16);
   };
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState(() => ({
     title: '',
     description: '',
     category: '',
@@ -24,7 +24,7 @@ export default function IncidentForm() {
     severity: '',
     imageUrl: '',
     reportedAt: getLocalISOString(),
-  });
+  }));
 
   const handleChange = (field, value) => {
     setForm(prev => ({ ...prev, [field]: value }));

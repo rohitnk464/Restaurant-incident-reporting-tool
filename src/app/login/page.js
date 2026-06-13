@@ -15,13 +15,7 @@ export default function LoginPage() {
     password: 'admin123',
   });
 
-  useEffect(() => {
-    if (activeRole === 'admin') {
-      setForm({ email: 'admin@californiaburrito.com', password: 'admin123' });
-    } else {
-      setForm({ email: 'dtla@californiaburrito.com', password: 'manager123' });
-    }
-  }, [activeRole]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,7 +92,10 @@ export default function LoginPage() {
         }}>
           <button
             type="button"
-            onClick={() => setActiveRole('admin')}
+            onClick={() => {
+              setActiveRole('admin');
+              setForm({ email: 'admin@californiaburrito.com', password: 'admin123' });
+            }}
             style={{
               flex: 1, 
               padding: '0.8rem 1rem', 
@@ -122,7 +119,10 @@ export default function LoginPage() {
           </button>
           <button
             type="button"
-            onClick={() => setActiveRole('manager')}
+            onClick={() => {
+              setActiveRole('manager');
+              setForm({ email: 'dtla@californiaburrito.com', password: 'manager123' });
+            }}
             style={{
               flex: 1, 
               padding: '0.8rem 1rem', 

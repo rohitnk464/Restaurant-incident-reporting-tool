@@ -9,17 +9,6 @@ export default function Notifications() {
   const [unread, setUnread] = useState(0);
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    fetchIncidents();
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   const fetchIncidents = async () => {
     try {
       const res = await fetch('/api/incidents');
@@ -36,6 +25,17 @@ export default function Notifications() {
       console.error('Failed to fetch notifications', err);
     }
   };
+
+  useEffect(() => {
+    fetchIncidents();
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const toggleDropdown = () => {
     setOpen(!open);
